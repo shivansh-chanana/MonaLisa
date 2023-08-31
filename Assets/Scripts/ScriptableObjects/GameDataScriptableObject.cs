@@ -7,5 +7,7 @@ public class GameDataScriptableObject : ScriptableObject
 {
     public string levelName;
     public LayoutType layoutType;
+    [Space]
     public Vector2 cellSize;
+    public Vector2 cellSpacing;
 }

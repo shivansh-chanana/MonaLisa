@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Level 2
   layoutType: 2
-  cellSize: {x: 100, y: 100}
+  cellSize: {x: 120, y: 120}
+  cellSpacing: {x: 20, y: 20}

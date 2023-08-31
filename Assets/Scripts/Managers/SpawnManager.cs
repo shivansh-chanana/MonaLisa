@@ -28,6 +28,7 @@ public class SpawnManager : MonoBehaviour
         //Getting cell size from GameData
         GridLayoutGroup gridLayout = spawnParent.GetComponent<GridLayoutGroup>();
         gridLayout.cellSize = GameManager.instance.gameData[GameManager.instance.GetCurLevel].cellSize;
+        gridLayout.spacing = GameManager.instance.gameData[GameManager.instance.GetCurLevel].cellSpacing;
 
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = (int)layoutCoordinates.y;
