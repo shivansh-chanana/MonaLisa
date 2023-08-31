@@ -5,6 +5,10 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    public List<GameDataScriptableObject> gameData;
+    [Space]
+    [Header("Script References")]
+    public SpawnManager spawnManager;
 
     [HideInInspector]
     public UnityEvent<FoodTypeEnum,CardBaseScript> cardClickEvent;
@@ -17,12 +21,20 @@ public class GameManager : MonoBehaviour
 
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
+    private int curLevel = 0;
     [SerializeField]
     private CardSelectionEnum curSelectionState;
     [SerializeField]
     private FoodTypeEnum curSelectionFoodType;
     [SerializeField]
     private List<CardBaseScript> curSelectedCards;
+    #endregion
+
+    #region
+    public int GetCurLevel 
+    {
+        get { return curLevel; }
+    }
     #endregion
 
     public static GameManager instance;
@@ -39,6 +51,11 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         cardClickEvent.RemoveListener(UpdateCardClickState);
+    }
+
+    private void Start()
+    {
+        spawnManager.CardsSpawn();
     }
 
     void UpdateCardClickState(FoodTypeEnum selectedFoodType , CardBaseScript curCard)
@@ -87,7 +104,7 @@ public class GameManager : MonoBehaviour
 
         //Clear Currently Selected Cards List
         curSelectedCards.Clear();
-        curSelectionFoodType = FoodTypeEnum.none;
+        curSelectionFoodType = FoodTypeEnum.E_None;
     }
 
     void OnCardsMatch() 

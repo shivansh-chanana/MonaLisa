@@ -6,15 +6,11 @@ using UnityEngine;
 
 public class CardScript : CardBaseScript
 {
-    // Start is called before the first frame update
-    void Start()
+    public CardScriptableObject cardData;
+
+    public void UpdateFoodType() 
     {
-        base.Start();
+        myFoodType = cardData.foodType;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
