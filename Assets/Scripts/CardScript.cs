@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class CardScript : CardBaseScript
 {
-    public CardScriptableObject cardData;
-
     public void UpdateFoodType() 
     {
         myFoodType = cardData.foodType;

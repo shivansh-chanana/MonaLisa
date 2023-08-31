@@ -1125,6 +1125,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData:
   - {fileID: 11400000, guid: 36984d36bbd2ccd4aab429baf73b7d94, type: 2}
+  primaryRendTex: {fileID: 8400000, guid: 46b491ddf36044d41915d4c08adfe1e6, type: 2}
+  primaryCardRendTexPos: {fileID: 480269572}
+  secondaryRendTex: {fileID: 8400000, guid: b9d19cae5590a7640a21b744824f1690, type: 2}
+  secondaryCardRendTexPos: {fileID: 1402418876}
   spawnManager: {fileID: 481273405}
   cardClickEvent:
     m_PersistentCalls:

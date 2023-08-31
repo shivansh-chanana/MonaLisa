@@ -2,13 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public List<GameDataScriptableObject> gameData;
+
+    public RenderTexture primaryRendTex;
+    public Transform primaryCardRendTexPos;
+    public RenderTexture secondaryRendTex;
+    public Transform secondaryCardRendTexPos;
+
     [Space]
     [Header("Script References")]
     public SpawnManager spawnManager;
+
 
     [HideInInspector]
     public UnityEvent<FoodTypeEnum,CardBaseScript> cardClickEvent;
@@ -67,13 +75,38 @@ public class GameManager : MonoBehaviour
         {
             case CardSelectionEnum.E_PrimaryCard:
                 curSelectionState = CardSelectionEnum.E_SecondaryCard;
+                SetPrimaryCardObj(curCard.cardData.foodItem);
+                SetPrimaryCardRenderTex(curCard.renderImg);
                 SetNewFoodType(selectedFoodType);
                 break;
             case CardSelectionEnum.E_SecondaryCard:
                 curSelectionState = CardSelectionEnum.E_PrimaryCard;
+                SetSecondaryCardObj(curCard.cardData.foodItem);
+                SetSecondaryCardRenderTex(curCard.renderImg);
                 OnSecondaryClick(selectedFoodType);
                 break;
         }
+    }
+
+    void SetPrimaryCardObj(GameObject foodItem) 
+    {
+        Instantiate(foodItem, primaryCardRendTexPos);
+    }
+
+    void SetPrimaryCardRenderTex(RawImage img)
+    {
+        img.texture = primaryRendTex;
+    }
+
+
+    void SetSecondaryCardObj(GameObject foodItem)
+    {
+        Instantiate(foodItem, secondaryCardRendTexPos);
+    }
+
+    void SetSecondaryCardRenderTex(RawImage img)
+    {
+        img.texture = secondaryRendTex;
     }
 
     void SetNewFoodType(FoodTypeEnum selectedFoodType) 
@@ -83,7 +116,6 @@ public class GameManager : MonoBehaviour
 
     void OnSecondaryClick(FoodTypeEnum selectedFoodType) 
     {
-
         //Checking if food type matches
         if (curSelectionFoodType == selectedFoodType)
         {
@@ -105,6 +137,10 @@ public class GameManager : MonoBehaviour
         //Clear Currently Selected Cards List
         curSelectedCards.Clear();
         curSelectionFoodType = FoodTypeEnum.E_None;
+
+        //Destory 3D objects //convert to object pooling later
+        Destroy(primaryCardRendTexPos.GetChild(0).gameObject);
+        Destroy(secondaryCardRendTexPos.GetChild(0).gameObject);
     }
 
     void OnCardsMatch() 

@@ -323,8 +323,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43054ee96d3b21a42b060a06a3280747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myFoodType: 1
   cardData: {fileID: 11400000, guid: 050395e64b55c954b8d55c7fda383b37, type: 2}
+  myFoodType: 1
+  renderImg: {fileID: 909856150961090149}
 --- !u!114 &3217955667684640481
 MonoBehaviour:
   m_ObjectHideFlags: 0

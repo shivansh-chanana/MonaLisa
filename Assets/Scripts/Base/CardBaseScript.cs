@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CardBaseScript : MonoBehaviour, IPointerClickHandler
 {
+    public CardScriptableObject cardData;
     public FoodTypeEnum myFoodType;
+    public RawImage renderImg;
 
-    bool isAlreadyClicked = false;
-    
     Animator anim;
     float animSpeed = 2.5f;
     string animShowStateName = "FlipRevelAnimation";
     string animHideStateName = "FlipHideAnimation";
     string animMatchedStateName = "MatchedAnimation";
 
+    bool isAlreadyClicked = false;
 
     protected void Start()
     {
