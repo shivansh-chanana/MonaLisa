@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d936c4d2784f8408dc23ae0fc5676a, type: 3}
   m_Name: Hard_1
   m_EditorClassIdentifier: 
-  levelName: Hard Leveo
+  levelName: Hard Level
+  totalTries: 20
   gameDataPath: Hard 5x6
   layoutType: 2
   cellSize: {x: 120, y: 120}

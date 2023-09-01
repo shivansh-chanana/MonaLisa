@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameDataScriptableObject : ScriptableObject
 {
     public string levelName;
+    public int totalTries;
     public string gameDataPath;
     public LayoutType layoutType;
     [Space]

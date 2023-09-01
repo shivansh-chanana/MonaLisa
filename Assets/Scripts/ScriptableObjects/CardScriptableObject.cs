@@ -7,6 +7,6 @@ public class CardScriptableObject : ScriptableObject
 {
     public GameObject foodItem;
     public FoodTypeEnum foodType;
-    public float amount = 10;
+    public int amount = 10;
     public Color bgColor;
 }

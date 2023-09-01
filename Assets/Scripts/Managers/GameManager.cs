@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Script References")]
     public SpawnManager spawnManager;
+    
+    private ScoreManager scoreManager;
 
 
     [HideInInspector]
@@ -21,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
+    [SerializeField]
+    private bool isGameOver = false;
     [SerializeField]
     private int totalRemainingCards;
     [SerializeField]
@@ -50,7 +55,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private void Awake()
     {
-        instance = this;
+        if(instance)
+            Destroy(gameObject);
+        else 
+            instance = this;
     }
 
     private void OnEnable()
@@ -67,8 +75,19 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        scoreManager = FindObjectOfType<ScoreManager>();
+
         savedData = TryLoadLastGame();
+        //If no previous tries available then add from game data
+        if(savedData.hasLoadData == 0) 
+            scoreManager.UpdateTriesEvent.Invoke(GetGameData.totalTries);
+       
+        //Create cards now
         spawnManager.CardsSpawn(savedData);
+
+        //Add Listeners 
+        //Observer pattern
+        scoreManager.TriesFinishedEvent.AddListener(OnGameOver);
     }
 
     //Try to load last saved game if any
@@ -80,6 +99,11 @@ public class GameManager : MonoBehaviour
         if (loadStruct.hasLoadData == 1)
         {
             gameData = Resources.Load<GameDataScriptableObject>("ScriptableObjects/GameData/" + loadStruct.gameDataPath);
+
+            //update score, tries and matches
+            scoreManager.UpdateMatchEvent.Invoke(loadStruct.prevMatches);
+            scoreManager.UpdateTriesEvent.Invoke(loadStruct.remainingTries);
+            scoreManager.UpdateScoreEvent.Invoke(loadStruct.currentScore);
         }
 
         return loadStruct;
@@ -134,13 +158,15 @@ public class GameManager : MonoBehaviour
     void OnCardJourneyComplete() 
     {
         cardJourneyCompleteEvent.Invoke();
+        if(totalRemainingCards > 0) scoreManager.UpdateTriesEvent.Invoke(-1);
 
         //Card Journey Complete , we can save game now
         SaveLoadStruct saveStruct = new SaveLoadStruct();
         saveStruct.hasLoadData = 1;
         saveStruct.remainingCards = totalRemainingCards;
-        saveStruct.remainingTurns = 4;
-        saveStruct.currentScore = 100;
+        saveStruct.remainingTries = scoreManager.TriesLeft;
+        saveStruct.currentScore = scoreManager.Score;
+        saveStruct.prevMatches = scoreManager.Matches;
         saveStruct.gameDataPath = GetGameData.gameDataPath + "/" + GetGameData.name;
 
         SaveLoadManager.instance.SaveGame(saveStruct);
@@ -149,9 +175,14 @@ public class GameManager : MonoBehaviour
     void OnCardsMatch()
     {
         cardsMatchEvent.Invoke();
+        scoreManager.UpdateMatchEvent.Invoke(1);
 
-        //Remove top Currently Selected Cards from queue
-        curSelectedCards.Dequeue().OnCardRemove();
+        //Remove top Currently Selected Cards from queue 
+        //update score from primary card
+        CardBaseScript card = curSelectedCards.Dequeue();
+        scoreManager.UpdateScoreEvent.Invoke((card.cardData.amount));
+        card.OnCardRemove();
+
         curSelectedCards.Dequeue().OnCardRemove();
 
         UpdateTotalRemainingCards(-2);
@@ -164,5 +195,11 @@ public class GameManager : MonoBehaviour
         //Remove top Currently Selected Cards from queue
         curSelectedCards.Dequeue().OnCardReset();
         curSelectedCards.Dequeue().OnCardReset();
+    }
+
+    void OnGameOver() 
+    {
+        isGameOver = true;
+        Debug.Log("Game Over");
     }
 }

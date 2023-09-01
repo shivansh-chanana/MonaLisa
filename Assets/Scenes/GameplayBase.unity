@@ -442,7 +442,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 89320404d20f09a43a5cd2e34fc7c5e4, type: 2}
   m_sharedMaterial: {fileID: 4252780735852228179, guid: 89320404d20f09a43a5cd2e34fc7c5e4, type: 2}
@@ -1670,7 +1670,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 89320404d20f09a43a5cd2e34fc7c5e4, type: 2}
   m_sharedMaterial: {fileID: 4252780735852228179, guid: 89320404d20f09a43a5cd2e34fc7c5e4, type: 2}
@@ -2260,7 +2260,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 89320404d20f09a43a5cd2e34fc7c5e4, type: 2}
   m_sharedMaterial: {fileID: 4252780735852228179, guid: 89320404d20f09a43a5cd2e34fc7c5e4, type: 2}
@@ -2384,6 +2384,15 @@ MonoBehaviour:
   triesLeftText: {fileID: 205047035}
   matchesText: {fileID: 1922824927}
   scoreText: {fileID: 1457363575}
+  UpdateMatchEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  UpdateTriesEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  UpdateScoreEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2082602264
 GameObject:
   m_ObjectHideFlags: 0

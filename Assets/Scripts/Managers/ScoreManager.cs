@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -10,28 +12,84 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI matchesText;
     public TextMeshProUGUI scoreText;
 
-    private int triesLeft;
-    private int matches;
-    private int scoreLeft;
+    public Image comboBarFill;
+
+    private int triesLeft = 0;
+    private int matches = 0;
+    private int score = 0;
+
+    #region Getter/Setter
+
+    public int TriesLeft 
+    {
+        get { return triesLeft; }
+        set { triesLeft = value; }
+    }
+
+    public int Matches
+    {
+        get { return matches; }
+        set { matches = value; }
+    }
+
+    public int Score 
+    {
+        get { return score; }
+        set { score = value; }
+    }
+
+    #endregion
+
+    [HideInInspector]
+    public UnityEvent TriesFinishedEvent;
+    [HideInInspector]
+    public UnityEvent<int> UpdateMatchEvent;
+    [HideInInspector]
+    public UnityEvent<int> UpdateTriesEvent;
+    [HideInInspector]
+    public UnityEvent<int> UpdateScoreEvent;
 
     private void Start()
     {
-        UpdateMatches();
+        UpdateMatchEvent.AddListener(UpdateMatches);
+        UpdateTriesEvent.AddListener(UpdateTries);
+        UpdateScoreEvent.AddListener(UpdateScore);
 
-        GameManager.instance.cardsMatchEvent.AddListener(AddNewMatch);
+        SetDefaulTextValues();
     }
 
-    void AddNewMatch() 
+    void SetDefaulTextValues() 
     {
-        matches++;
-        UpdateMatches();
+        matchesText.text = matches.ToString();
+        triesLeftText.text = triesLeft.ToString();
+        scoreText.text = score.ToString();
     }
 
-    void UpdateMatches() 
+    void UpdateMatches(int amount)
     {
-        DOTween.To(() => matches, x => matches = x, 52, 1).OnUpdate(() => 
+        matches +=amount;
+        matchesText.text = matches.ToString();
+    }
+
+    void UpdateTries(int amount) 
+    {
+        triesLeft += amount;
+        triesLeftText.text = triesLeft.ToString();
+
+        if (triesLeft <= 0) 
         {
-            matchesText.text = matches.ToString();
-        });
+            TriesFinishedEvent.Invoke();
+        }
+    }
+
+    void UpdateScore(int amount) 
+    {
+        int prevScore = score;
+        score += amount;
+
+        DOTween.To(() => prevScore, x => prevScore = x, score, 0.5f).OnUpdate(() =>
+            {
+                scoreText.text = prevScore.ToString();
+            });
     }
 }

@@ -8,7 +8,8 @@ public struct SaveLoadStruct
     public int hasLoadData;
     public int remainingCards;
     public int currentScore;
-    public int remainingTurns;
+    public int remainingTries;
+    public int prevMatches;
     public string gameDataPath;
 }
 
