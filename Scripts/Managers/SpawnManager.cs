@@ -1,25 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
     public GameObject cardPrefab;
     public List<CardScriptableObject> cardsToSpawn;
-    
-    Transform spawnParent;
+
+    [HideInInspector]
+    public UnityEvent<int> OnCardsCreateEvent;
+
+    private Transform spawnParent;
 
     private void Start()
     {
         spawnParent = GameObject.FindGameObjectWithTag("GameplayCanvas").GetComponent<GameplayRootCanvas>().cardContainer;
     }
 
-    void CardsSpawn()
+    public void CardsSpawn(SaveLoadStruct curLoadData)
     {
         Vector2 layoutCoordinates = GetLayoutCoordinates();
 
-        RandomSpawnLogic((int)layoutCoordinates.x * (int)layoutCoordinates.y);
+        if(curLoadData.hasLoadData == 0)
+            RandomSpawnLogic((int)layoutCoordinates.x * (int)layoutCoordinates.y);
+        else
+            RandomSpawnLogic(curLoadData.remainingCards);
 
         //Getting cell size from GameData
         GridLayoutGroup gridLayout = spawnParent.GetComponent<GridLayoutGroup>();
@@ -28,28 +35,6 @@ public class SpawnManager : MonoBehaviour
 
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = (int)layoutCoordinates.y;
-
-        Invoke(nameof(OnCardsSpawnComplete), 2f);
-    }
-
-    public void CardsSpawnFromLastState(SaveLoadStruct curLoadData) 
-    {
-        if (curLoadData.hasLoadData == 0) 
-        {
-            Debug.Log("No load data present");
-            CardsSpawn();
-            return;
-        }
-
-        RandomSpawnLogic(curLoadData.remainingTiles);
-
-        //Getting cell size from GameData
-        GridLayoutGroup gridLayout = spawnParent.GetComponent<GridLayoutGroup>();
-        gridLayout.cellSize = GameManager.instance.GetGameData.cellSize;
-        gridLayout.spacing = GameManager.instance.GetGameData.cellSpacing;
-
-        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        //gridLayout.constraintCount = (int)layoutCoordinates.y;
 
         Invoke(nameof(OnCardsSpawnComplete), 2f);
     }
@@ -82,6 +67,8 @@ public class SpawnManager : MonoBehaviour
 
         //Memory leak safety measure
         randomItemsFirstFlow.Clear();
+
+        OnCardsCreateEvent.Invoke(totalElements);
     }
 
     void OnCardsSpawnComplete()

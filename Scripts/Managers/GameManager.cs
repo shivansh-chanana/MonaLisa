@@ -22,19 +22,28 @@ public class GameManager : MonoBehaviour
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
     [SerializeField]
+    private int totalRemainingCards;
+    [SerializeField]
+    private GameDataScriptableObject gameData;
+    [Space]
+    private SaveLoadStruct savedData;
+    [Space]
+    [SerializeField]
     private CardSelectionEnum curSelectionState;
     [SerializeField]
     private FoodTypeEnum curSelectionFoodType;
     [SerializeField]
     private Queue<CardBaseScript> curSelectedCards = new Queue<CardBaseScript>();
-    [SerializeField]
-    private GameDataScriptableObject gameData;
     #endregion
 
     #region Getter/Setter Values
     public GameDataScriptableObject GetGameData 
     {
         get { return gameData; }
+    }
+    public int GetRemainingCards 
+    {
+        get { return totalRemainingCards; }
     }
     #endregion
 
@@ -47,24 +56,38 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         cardClickEvent.AddListener(UpdateCardClickState);
+        spawnManager.OnCardsCreateEvent.AddListener(UpdateTotalRemainingCards);
     }
 
     private void OnDisable()
     {
         cardClickEvent.RemoveListener(UpdateCardClickState);
+        spawnManager.OnCardsCreateEvent.RemoveListener(UpdateTotalRemainingCards);
     }
 
     private void Start()
     {
+        savedData = TryLoadLastGame();
+        spawnManager.CardsSpawn(savedData);
+    }
+
+    //Try to load last saved game if any
+    SaveLoadStruct TryLoadLastGame() 
+    {
         SaveLoadStruct loadStruct = new SaveLoadStruct();
         loadStruct = SaveLoadManager.instance.LoadGame();
 
-        if (loadStruct.hasLoadData == 1) 
+        if (loadStruct.hasLoadData == 1)
         {
             gameData = Resources.Load<GameDataScriptableObject>("ScriptableObjects/GameData/" + loadStruct.gameDataPath);
         }
 
-        spawnManager.CardsSpawnFromLastState(loadStruct);
+        return loadStruct;
+    }
+
+    void UpdateTotalRemainingCards(int amount) 
+    {
+        totalRemainingCards += amount;
     }
 
     void UpdateCardClickState(FoodTypeEnum selectedFoodType , CardScript curCard)
@@ -111,6 +134,16 @@ public class GameManager : MonoBehaviour
     void OnCardJourneyComplete() 
     {
         cardJourneyCompleteEvent.Invoke();
+
+        //Card Journey Complete , we can save game now
+        SaveLoadStruct saveStruct = new SaveLoadStruct();
+        saveStruct.hasLoadData = 1;
+        saveStruct.remainingCards = totalRemainingCards;
+        saveStruct.remainingTurns = 4;
+        saveStruct.currentScore = 100;
+        saveStruct.gameDataPath = GetGameData.gameDataPath + "/" + GetGameData.name;
+
+        SaveLoadManager.instance.SaveGame(saveStruct);
     }
 
     void OnCardsMatch()
@@ -120,6 +153,8 @@ public class GameManager : MonoBehaviour
         //Remove top Currently Selected Cards from queue
         curSelectedCards.Dequeue().OnCardRemove();
         curSelectedCards.Dequeue().OnCardRemove();
+
+        UpdateTotalRemainingCards(-2);
     }
 
     void OnCardMisMatch() 
