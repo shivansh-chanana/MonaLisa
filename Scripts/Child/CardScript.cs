@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class CardScript : CardBaseScript
 {
     public RawImage renderImg;
+    public Image renderBg;
     public Camera myRendCamera;
 
     GameObject foodItem;
@@ -31,9 +32,10 @@ public class CardScript : CardBaseScript
         foodItem.transform.eulerAngles += new Vector3(30, 0, 0);
     }
 
-    public void UpdateFoodType()
+    public void UpdateFoodTypeAndBg()
     {
         myFoodType = cardData.foodType;
+        renderBg.color = cardData.bgColor;
     }
 
     public override void OnCardClick()

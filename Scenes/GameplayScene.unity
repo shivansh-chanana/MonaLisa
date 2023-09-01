@@ -998,7 +998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData:
-  - {fileID: 11400000, guid: f7a80b4386d37b44db7cf7397eb5c815, type: 2}
+  - {fileID: 11400000, guid: 36984d36bbd2ccd4aab429baf73b7d94, type: 2}
   spawnManager: {fileID: 481273405}
   cardClickEvent:
     m_PersistentCalls:

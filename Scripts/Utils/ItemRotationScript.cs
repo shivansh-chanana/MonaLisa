@@ -8,6 +8,6 @@ public class ItemRotationScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.DOLocalRotate(new Vector3(0, 360, 45), 8f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear);
+        transform.DOLocalRotate(new Vector3(0, 360, 45), 8f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear).SetLoops(-1,LoopType.Incremental);
     }
 }

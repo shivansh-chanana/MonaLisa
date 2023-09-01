@@ -328,7 +328,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5b6bf88bfa00825428964ab63a802900, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -436,6 +436,7 @@ MonoBehaviour:
   cardData: {fileID: 11400000, guid: 050395e64b55c954b8d55c7fda383b37, type: 2}
   myFoodType: 1
   renderImg: {fileID: 909856150961090149}
+  renderBg: {fileID: 7922953937511739053}
   myRendCamera: {fileID: 4770811209167550674}
 --- !u!114 &3217955667684640481
 MonoBehaviour:
@@ -481,6 +482,7 @@ GameObject:
   - component: {fileID: 454210079002481009}
   - component: {fileID: 569077535613889768}
   - component: {fileID: 909856150961090149}
+  - component: {fileID: 5342577381019238367}
   m_Layer: 5
   m_Name: 3DImg_RawImg
   m_TagString: Untagged
@@ -543,3 +545,18 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &5342577381019238367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7524507110916624131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
