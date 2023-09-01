@@ -7,9 +7,15 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject cardPrefab;
     public List<CardScriptableObject> cardsToSpawn;
-    public Transform spawnParent;
+    
+    Transform spawnParent;
 
-    public void CardsSpawn()
+    private void Start()
+    {
+        spawnParent = GameObject.FindGameObjectWithTag("GameplayCanvas").GetComponent<GameplayRootCanvas>().cardContainer;
+    }
+
+    void CardsSpawn()
     {
         Vector2 layoutCoordinates = GetLayoutCoordinates();
 
@@ -17,11 +23,33 @@ public class SpawnManager : MonoBehaviour
 
         //Getting cell size from GameData
         GridLayoutGroup gridLayout = spawnParent.GetComponent<GridLayoutGroup>();
-        gridLayout.cellSize = GameManager.instance.gameData[GameManager.instance.GetCurLevel].cellSize;
-        gridLayout.spacing = GameManager.instance.gameData[GameManager.instance.GetCurLevel].cellSpacing;
+        gridLayout.cellSize = GameManager.instance.GetGameData.cellSize;
+        gridLayout.spacing = GameManager.instance.GetGameData.cellSpacing;
 
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = (int)layoutCoordinates.y;
+
+        Invoke(nameof(OnCardsSpawnComplete), 2f);
+    }
+
+    public void CardsSpawnFromLastState(SaveLoadStruct curLoadData) 
+    {
+        if (curLoadData.hasLoadData == 0) 
+        {
+            Debug.Log("No load data present");
+            CardsSpawn();
+            return;
+        }
+
+        RandomSpawnLogic(curLoadData.remainingTiles);
+
+        //Getting cell size from GameData
+        GridLayoutGroup gridLayout = spawnParent.GetComponent<GridLayoutGroup>();
+        gridLayout.cellSize = GameManager.instance.GetGameData.cellSize;
+        gridLayout.spacing = GameManager.instance.GetGameData.cellSpacing;
+
+        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        //gridLayout.constraintCount = (int)layoutCoordinates.y;
 
         Invoke(nameof(OnCardsSpawnComplete), 2f);
     }
@@ -66,7 +94,7 @@ public class SpawnManager : MonoBehaviour
     {
         Vector2 layoutCoordinates = new Vector2();
 
-        switch (GameManager.instance.gameData[GameManager.instance.GetCurLevel].layoutType)
+        switch (GameManager.instance.GetGameData.layoutType)
         {
             case LayoutType.E_2x2:
                 layoutCoordinates = new Vector2(2,2);

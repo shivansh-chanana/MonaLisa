@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public List<GameDataScriptableObject> gameData;
-
-    [Space]
     [Header("Script References")]
     public SpawnManager spawnManager;
 
@@ -24,19 +21,20 @@ public class GameManager : MonoBehaviour
 
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
-    private int curLevel = 0;
     [SerializeField]
     private CardSelectionEnum curSelectionState;
     [SerializeField]
     private FoodTypeEnum curSelectionFoodType;
     [SerializeField]
     private Queue<CardBaseScript> curSelectedCards = new Queue<CardBaseScript>();
+    [SerializeField]
+    private GameDataScriptableObject gameData;
     #endregion
 
     #region Getter/Setter Values
-    public int GetCurLevel 
+    public GameDataScriptableObject GetGameData 
     {
-        get { return curLevel; }
+        get { return gameData; }
     }
     #endregion
 
@@ -58,7 +56,15 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        spawnManager.CardsSpawn();
+        SaveLoadStruct loadStruct = new SaveLoadStruct();
+        loadStruct = SaveLoadManager.instance.LoadGame();
+
+        if (loadStruct.hasLoadData == 1) 
+        {
+            gameData = Resources.Load<GameDataScriptableObject>("ScriptableObjects/GameData/" + loadStruct.gameDataPath);
+        }
+
+        spawnManager.CardsSpawnFromLastState(loadStruct);
     }
 
     void UpdateCardClickState(FoodTypeEnum selectedFoodType , CardScript curCard)
@@ -107,7 +113,7 @@ public class GameManager : MonoBehaviour
         cardJourneyCompleteEvent.Invoke();
     }
 
-    void OnCardsMatch() 
+    void OnCardsMatch()
     {
         cardsMatchEvent.Invoke();
 
