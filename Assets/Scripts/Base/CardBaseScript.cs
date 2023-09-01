@@ -8,7 +8,6 @@ public class CardBaseScript : MonoBehaviour, IPointerClickHandler
 {
     public CardScriptableObject cardData;
     public FoodTypeEnum myFoodType;
-    public RawImage renderImg;
 
     Animator anim;
     float animSpeed = 2.5f;
@@ -30,7 +29,7 @@ public class CardBaseScript : MonoBehaviour, IPointerClickHandler
         Debug.Log("Card Clicked");
     }
 
-    void OnCardClick() 
+    public virtual void OnCardClick() 
     {
         if (!isAlreadyClicked)
             isAlreadyClicked = true;
@@ -40,33 +39,39 @@ public class CardBaseScript : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        anim.Play(animShowStateName);
+        PlayAnimation(animShowStateName);
     }
 
     void OnCardAlreadyClicked() 
     {
-
+        //If we want to unturn the selected card
     }
 
     public void OnCardReset() 
     {
         Debug.Log("On Card Reset");
         isAlreadyClicked = false;
-        anim.Play(animHideStateName);
+        PlayAnimation(animHideStateName);
     }
 
     public void OnCardRemove() 
     {
-        anim.Play(animMatchedStateName);
+        PlayAnimation(animMatchedStateName);
     }
 
     public void OnRevealAnimationDone()
     {
-        GameManager.instance.cardClickEvent.Invoke(myFoodType, this);
+        //If we want to do something after reveal animation done
     }
 
     public void OnMatchedAnimationDone() 
     {
+        enabled = false;
         gameObject.SetActive(false);
+    }
+
+    void PlayAnimation(string animationState) 
+    {
+        anim.Play(animationState);
     }
 }

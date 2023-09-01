@@ -6,20 +6,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public List<GameDataScriptableObject> gameData;
-
-    public RenderTexture primaryRendTex;
-    public Transform primaryCardRendTexPos;
-    public RenderTexture secondaryRendTex;
-    public Transform secondaryCardRendTexPos;
-
-    [Space]
     [Header("Script References")]
     public SpawnManager spawnManager;
 
 
     [HideInInspector]
-    public UnityEvent<FoodTypeEnum,CardBaseScript> cardClickEvent;
+    public UnityEvent<FoodTypeEnum,CardScript> cardClickEvent;
     [HideInInspector]
     public UnityEvent cardJourneyCompleteEvent;
     [HideInInspector]
@@ -29,19 +21,29 @@ public class GameManager : MonoBehaviour
 
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
-    private int curLevel = 0;
+    [SerializeField]
+    private int totalRemainingCards;
+    [SerializeField]
+    private GameDataScriptableObject gameData;
+    [Space]
+    private SaveLoadStruct savedData;
+    [Space]
     [SerializeField]
     private CardSelectionEnum curSelectionState;
     [SerializeField]
     private FoodTypeEnum curSelectionFoodType;
     [SerializeField]
-    private List<CardBaseScript> curSelectedCards;
+    private Queue<CardBaseScript> curSelectedCards = new Queue<CardBaseScript>();
     #endregion
 
-    #region
-    public int GetCurLevel 
+    #region Getter/Setter Values
+    public GameDataScriptableObject GetGameData 
     {
-        get { return curLevel; }
+        get { return gameData; }
+    }
+    public int GetRemainingCards 
+    {
+        get { return totalRemainingCards; }
     }
     #endregion
 
@@ -54,59 +56,56 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         cardClickEvent.AddListener(UpdateCardClickState);
+        spawnManager.OnCardsCreateEvent.AddListener(UpdateTotalRemainingCards);
     }
 
     private void OnDisable()
     {
         cardClickEvent.RemoveListener(UpdateCardClickState);
+        spawnManager.OnCardsCreateEvent.RemoveListener(UpdateTotalRemainingCards);
     }
 
     private void Start()
     {
-        spawnManager.CardsSpawn();
+        savedData = TryLoadLastGame();
+        spawnManager.CardsSpawn(savedData);
     }
 
-    void UpdateCardClickState(FoodTypeEnum selectedFoodType , CardBaseScript curCard)
+    //Try to load last saved game if any
+    SaveLoadStruct TryLoadLastGame() 
     {
-        curSelectedCards.Add(curCard);
+        SaveLoadStruct loadStruct = new SaveLoadStruct();
+        loadStruct = SaveLoadManager.instance.LoadGame();
+
+        if (loadStruct.hasLoadData == 1)
+        {
+            gameData = Resources.Load<GameDataScriptableObject>("ScriptableObjects/GameData/" + loadStruct.gameDataPath);
+        }
+
+        return loadStruct;
+    }
+
+    void UpdateTotalRemainingCards(int amount) 
+    {
+        totalRemainingCards += amount;
+    }
+
+    void UpdateCardClickState(FoodTypeEnum selectedFoodType , CardScript curCard)
+    {
+        curSelectedCards.Enqueue(curCard);
 
         //Creating switch so that in Future if we want to add 3 or more turn based card matching game then it will be easier for us
         switch (curSelectionState)
         {
             case CardSelectionEnum.E_PrimaryCard:
                 curSelectionState = CardSelectionEnum.E_SecondaryCard;
-                SetPrimaryCardObj(curCard.cardData.foodItem);
-                SetPrimaryCardRenderTex(curCard.renderImg);
                 SetNewFoodType(selectedFoodType);
                 break;
             case CardSelectionEnum.E_SecondaryCard:
                 curSelectionState = CardSelectionEnum.E_PrimaryCard;
-                SetSecondaryCardObj(curCard.cardData.foodItem);
-                SetSecondaryCardRenderTex(curCard.renderImg);
-                OnSecondaryClick(selectedFoodType);
+                StartCoroutine(OnSecondaryClick(selectedFoodType , curSelectionFoodType));
                 break;
         }
-    }
-
-    void SetPrimaryCardObj(GameObject foodItem) 
-    {
-        Instantiate(foodItem, primaryCardRendTexPos);
-    }
-
-    void SetPrimaryCardRenderTex(RawImage img)
-    {
-        img.texture = primaryRendTex;
-    }
-
-
-    void SetSecondaryCardObj(GameObject foodItem)
-    {
-        Instantiate(foodItem, secondaryCardRendTexPos);
-    }
-
-    void SetSecondaryCardRenderTex(RawImage img)
-    {
-        img.texture = secondaryRendTex;
     }
 
     void SetNewFoodType(FoodTypeEnum selectedFoodType) 
@@ -114,10 +113,12 @@ public class GameManager : MonoBehaviour
         curSelectionFoodType = selectedFoodType;
     }
 
-    void OnSecondaryClick(FoodTypeEnum selectedFoodType) 
+    IEnumerator OnSecondaryClick(FoodTypeEnum selectedFoodType , FoodTypeEnum foodTypeToCompare) 
     {
+        yield return new WaitForSeconds(1f);
+
         //Checking if food type matches
-        if (curSelectionFoodType == selectedFoodType)
+        if (foodTypeToCompare == selectedFoodType)
         {
             OnCardsMatch();
         }
@@ -134,32 +135,34 @@ public class GameManager : MonoBehaviour
     {
         cardJourneyCompleteEvent.Invoke();
 
-        //Clear Currently Selected Cards List
-        curSelectedCards.Clear();
-        curSelectionFoodType = FoodTypeEnum.E_None;
+        //Card Journey Complete , we can save game now
+        SaveLoadStruct saveStruct = new SaveLoadStruct();
+        saveStruct.hasLoadData = 1;
+        saveStruct.remainingCards = totalRemainingCards;
+        saveStruct.remainingTurns = 4;
+        saveStruct.currentScore = 100;
+        saveStruct.gameDataPath = GetGameData.gameDataPath + "/" + GetGameData.name;
 
-        //Destory 3D objects //convert to object pooling later
-        Destroy(primaryCardRendTexPos.GetChild(0).gameObject);
-        Destroy(secondaryCardRendTexPos.GetChild(0).gameObject);
+        SaveLoadManager.instance.SaveGame(saveStruct);
     }
 
-    void OnCardsMatch() 
+    void OnCardsMatch()
     {
         cardsMatchEvent.Invoke();
 
-        foreach (var item in curSelectedCards)
-        {
-            item.OnCardRemove();
-        }
+        //Remove top Currently Selected Cards from queue
+        curSelectedCards.Dequeue().OnCardRemove();
+        curSelectedCards.Dequeue().OnCardRemove();
+
+        UpdateTotalRemainingCards(-2);
     }
 
     void OnCardMisMatch() 
     {
-        foreach (var item in curSelectedCards)
-        {
-            item.OnCardReset();
-        }
-
         cardsMisMatchEvent.Invoke();
+
+        //Remove top Currently Selected Cards from queue
+        curSelectedCards.Dequeue().OnCardReset();
+        curSelectedCards.Dequeue().OnCardReset();
     }
 }
