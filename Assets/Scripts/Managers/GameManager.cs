@@ -176,6 +176,7 @@ public class GameManager : MonoBehaviour
     {
         cardsMatchEvent.Invoke();
         scoreManager.UpdateMatchEvent.Invoke(1);
+        scoreManager.StartComboEvent.Invoke();
 
         //Remove top Currently Selected Cards from queue 
         //update score from primary card

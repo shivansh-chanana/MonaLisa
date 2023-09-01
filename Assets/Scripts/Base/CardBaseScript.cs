@@ -25,12 +25,6 @@ public class CardBaseScript : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnCardClick();
-        Debug.Log("Card Clicked");
-    }
-
-    public virtual void OnCardClick() 
-    {
         if (!isAlreadyClicked)
             isAlreadyClicked = true;
         else
@@ -39,6 +33,12 @@ public class CardBaseScript : MonoBehaviour, IPointerClickHandler
             return;
         }
 
+        OnCardClick();
+        Debug.Log("Card Clicked");
+    }
+
+    public virtual void OnCardClick() 
+    {
         PlayAnimation(animShowStateName);
     }
 
