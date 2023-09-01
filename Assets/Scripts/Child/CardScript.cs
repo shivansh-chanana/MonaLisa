@@ -42,7 +42,9 @@ public class CardScript : CardBaseScript
     {
         base.OnCardClick();
         EnableRenderItems();
+
         GameManager.instance.cardClickEvent.Invoke(myFoodType, this);
+        GameManager.instance.cardFlipEvent.Invoke();
     }
 
     void EnableRenderItems() 

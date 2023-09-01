@@ -9,18 +9,22 @@ public class GameManager : MonoBehaviour
 {
     [Header("Script References")]
     public SpawnManager spawnManager;
-    
-    private ScoreManager scoreManager;
-
+    [HideInInspector]
+    public ScoreManager scoreManager;
 
     [HideInInspector]
-    public UnityEvent<FoodTypeEnum,CardScript> cardClickEvent;
+    public UnityEvent<FoodTypeEnum , CardScript> cardClickEvent;
+    [HideInInspector]
+    public UnityEvent cardFlipEvent;
     [HideInInspector]
     public UnityEvent cardJourneyCompleteEvent;
     [HideInInspector]
     public UnityEvent cardsMatchEvent;
     [HideInInspector]
     public UnityEvent cardsMisMatchEvent;
+    [HideInInspector]
+    public UnityEvent gameOverEvent;
+
 
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
@@ -201,6 +205,7 @@ public class GameManager : MonoBehaviour
     void OnGameOver() 
     {
         isGameOver = true;
+        gameOverEvent.Invoke();
         Debug.Log("Game Over");
     }
 }

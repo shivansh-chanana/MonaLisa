@@ -2662,6 +2662,7 @@ MonoBehaviour:
   matchesText: {fileID: 1922824927}
   scoreText: {fileID: 1457363575}
   comboText: {fileID: 1646663617}
+  comboBarParent: {fileID: 1899329169}
   comboBarFill: {fileID: 45942461}
   StartComboEvent:
     m_PersistentCalls:

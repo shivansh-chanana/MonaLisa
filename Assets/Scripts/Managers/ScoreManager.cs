@@ -14,6 +14,7 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI comboText;
 
+    public Transform comboBarParent;
     public Image comboBarFill;
 
     private int triesLeft = 0;
