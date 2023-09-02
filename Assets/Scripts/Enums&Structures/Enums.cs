@@ -45,6 +45,15 @@ public enum LayoutType
     E_5x6
 }
 
+public enum GameState
+{
+    E_GameStarted,
+    E_GamePaused,
+    E_GameLose,
+    E_GameWon
+}
+
 public class Enums
 {
+
 }

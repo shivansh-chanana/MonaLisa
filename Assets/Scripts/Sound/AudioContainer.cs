@@ -14,7 +14,8 @@ public class AudioContainer : MonoBehaviour
         GameManager.instance.cardFlipEvent.AddListener(PlayCardsFlipSound);
         GameManager.instance.cardsMatchEvent.AddListener(PlayCardsMatchSound);
         GameManager.instance.cardsMisMatchEvent.AddListener(PlayCardsMisMatchSound);
-        GameManager.instance.gameOverEvent.AddListener(PlayGameOverSound);
+        GameManager.instance.gameWinEvent.AddListener(PlayGameOverSound);
+        GameManager.instance.gameLoseEvent.AddListener(PlayGameOverSound);
     }
 
     void PlayCardsFlipSound()

@@ -11,4 +11,9 @@ public class ItemRotationScript : MonoBehaviour
         transform.eulerAngles = new Vector3(0,0,30); 
         transform.DOLocalRotate(new Vector3(0, 360, 0), 8f, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear).SetLoops(-1,LoopType.Incremental);
     }
+
+    private void OnDestroy()
+    {
+        DOTween.KillAll();
+    }
 }

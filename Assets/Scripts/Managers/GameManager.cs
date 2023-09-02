@@ -23,13 +23,13 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public UnityEvent cardsMisMatchEvent;
     [HideInInspector]
-    public UnityEvent gameOverEvent;
+    public UnityEvent gameWinEvent;
+    [HideInInspector]
+    public UnityEvent gameLoseEvent;
 
 
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
-    [SerializeField]
-    private bool isGameOver = false;
     [SerializeField]
     private int totalRemainingCards;
     [SerializeField]
@@ -80,11 +80,14 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
-
         savedData = TryLoadLastGame();
-        //If no previous tries available then add from game data
-        if(savedData.hasLoadData == 0) 
+
+        //If no previous data then add from level manager
+        if (savedData.hasLoadData == 0)
+        {
+            gameData = LevelManager.instance.gameData;
             scoreManager.UpdateTriesEvent.Invoke(GetGameData.totalTries);
+        }
        
         //Create cards now
         spawnManager.CardsSpawn(savedData);
@@ -92,6 +95,9 @@ public class GameManager : MonoBehaviour
         //Add Listeners 
         //Observer pattern
         scoreManager.TriesFinishedEvent.AddListener(OnGameOver);
+
+        //Update Game State to Game Started
+        GameStateManager.instance.UpdateGameStateEvent.Invoke(GameState.E_GameStarted);
     }
 
     //Try to load last saved game if any
@@ -116,6 +122,17 @@ public class GameManager : MonoBehaviour
     void UpdateTotalRemainingCards(int amount) 
     {
         totalRemainingCards += amount;
+        CheckCardsFinished();
+    }
+
+    void CheckCardsFinished() 
+    {
+        if (totalRemainingCards <= 0) 
+        {
+            GameStateManager.instance.UpdateGameStateEvent.Invoke(GameState.E_GameWon);
+            gameWinEvent.Invoke();
+            SaveLoadManager.instance.RemoveAllSaveData();
+        }
     }
 
     void UpdateCardClickState(FoodTypeEnum selectedFoodType , CardScript curCard)
@@ -204,8 +221,10 @@ public class GameManager : MonoBehaviour
 
     void OnGameOver() 
     {
-        isGameOver = true;
-        gameOverEvent.Invoke();
+        //Update GameState to GameOver
+        GameStateManager.instance.UpdateGameStateEvent.Invoke(GameState.E_GameLose);
+        gameLoseEvent.Invoke();
+        SaveLoadManager.instance.RemoveAllSaveData();
         Debug.Log("Game Over");
     }
 }

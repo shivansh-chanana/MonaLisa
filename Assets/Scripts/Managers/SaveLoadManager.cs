@@ -48,4 +48,10 @@ public class SaveLoadManager : MonoBehaviour
 
         return currentLoadState;
     }
+
+    public void RemoveAllSaveData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
 }

@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public GameDataScriptableObject gameData;
+
     public static LevelManager instance;
 
     private void Awake()
@@ -19,11 +21,31 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        SceneManager.activeSceneChanged += OnSceneChanged;
         Invoke(nameof(LoadMenu),2f);
     }
 
-    void LoadMenu() 
+    public void LoadMenu() 
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    private void OnSceneChanged(Scene current, Scene next)
+    {
+        if (current == SceneManager.GetSceneByName("Menu"))
+        {
+            LoadGameLevel();
+        }
+    }
+
+    void LoadGameLevel() 
+    {
+        SceneManager.LoadScene("Level_Food", LoadSceneMode.Additive);
+    }
+
+    public void ReloadScene() 
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SaveLoadManager.instance.RemoveAllSaveData();
     }
 }
