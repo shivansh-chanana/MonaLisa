@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Easy_1
   m_EditorClassIdentifier: 
   levelName: Let's Begin
-  totalTries: 20
+  totalTries: 8
   gameDataPath: Easy 2x2
   layoutType: 0
   cellSize: {x: 300, y: 300}

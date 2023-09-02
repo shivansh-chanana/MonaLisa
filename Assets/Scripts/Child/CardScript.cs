@@ -30,8 +30,8 @@ public class CardScript : CardBaseScript
         myRendCamera.gameObject.SetActive(false);
 
         foodItem = Instantiate(cardData.foodItem, myRendCamera.transform);
-        foodItem.transform.position += new Vector3(0,0f,5);
-        foodItem.transform.localScale = Vector3.one * 1.2f;
+        foodItem.transform.position += new Vector3(0,0f,6);
+        foodItem.transform.localScale = Vector3.one * 1f;
         foodItem.transform.eulerAngles += new Vector3(30, 0, 0);
     }
 
