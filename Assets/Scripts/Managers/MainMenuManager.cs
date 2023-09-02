@@ -1,3 +1,8 @@
+/*
+ * This script is for managing everything on menu scene
+ * and UI of menu as well
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

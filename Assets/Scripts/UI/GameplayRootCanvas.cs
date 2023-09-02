@@ -1,3 +1,7 @@
+/*
+ * This script is for managing everything on Gameplay Canvas
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

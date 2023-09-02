@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * This script handles all the scoring related logic and UI fields.
+ * Combo meter logic and UI is also included in the script
+ */
+
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using DG.Tweening.Core;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -46,6 +48,7 @@ public class ScoreManager : MonoBehaviour
 
     #endregion
 
+    #region Events
     [HideInInspector]
     public UnityEvent StartComboEvent;
     [HideInInspector]
@@ -56,7 +59,9 @@ public class ScoreManager : MonoBehaviour
     public UnityEvent<int> UpdateTriesEvent;
     [HideInInspector]
     public UnityEvent<int> UpdateScoreEvent;
-
+    #endregion
+    
+    //tween for combo //can be used to kill combo at anytime
     Tween curComboTween;
 
     private void Start()

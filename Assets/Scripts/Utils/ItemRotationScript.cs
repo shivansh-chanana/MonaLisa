@@ -1,3 +1,8 @@
+/*
+ * It's single responsibility is to rotate gameobject it has been attached to
+ */
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

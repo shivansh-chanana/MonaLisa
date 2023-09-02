@@ -1,3 +1,8 @@
+/*
+ * Script for saving and loading game data for resume functionality
+ */
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,8 +36,6 @@ public class SaveLoadManager : MonoBehaviour
         PlayerPrefs.SetInt(remainingTries, curSaveLoadState.remainingTries);
         PlayerPrefs.SetInt(prevMatches,curSaveLoadState.prevMatches);
         PlayerPrefs.SetString(lastGameData, curSaveLoadState.gameDataPath);
-
-        Debug.Log("Game Saved with values | " + lastGameData + " : " + curSaveLoadState.gameDataPath);
     }
 
     public SaveLoadStruct LoadGame() 

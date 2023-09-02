@@ -1,3 +1,8 @@
+/*
+ * Card Base script is for Handling basics of every card,
+ * We can create child scripts and modify or use the existing code
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +39,6 @@ public class CardBaseScript : MonoBehaviour, IPointerClickHandler
         }
 
         OnCardClick();
-        Debug.Log("Card Clicked");
     }
 
     public virtual void OnCardClick() 
@@ -49,7 +53,6 @@ public class CardBaseScript : MonoBehaviour, IPointerClickHandler
 
     public void OnCardReset() 
     {
-        Debug.Log("On Card Reset");
         isAlreadyClicked = false;
         PlayAnimation(animHideStateName);
     }

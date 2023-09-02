@@ -1,9 +1,11 @@
+/*
+ * This script handles all the core game logic and broadcasts all the game events
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public ScoreManager scoreManager;
 
+    #region Events
     [HideInInspector]
     public UnityEvent<FoodTypeEnum , CardScript> cardClickEvent;
     [HideInInspector]
@@ -26,7 +29,7 @@ public class GameManager : MonoBehaviour
     public UnityEvent gameWinEvent;
     [HideInInspector]
     public UnityEvent gameLoseEvent;
-
+    #endregion
 
     #region Private Variables for Debugging in Editor
     [Header("Debug")]
@@ -85,7 +88,8 @@ public class GameManager : MonoBehaviour
         //If no previous data then add from level manager
         if (savedData.hasLoadData == 0)
         {
-            gameData = LevelManager.instance.gameData;
+            if(LevelManager.instance != null) gameData = LevelManager.instance.gameData;
+            else gameData = Resources.Load<GameDataScriptableObject>("ScriptableObjects/GameData/Medium 2x3/Medium_1"); //Default gameData
             scoreManager.UpdateTriesEvent.Invoke(GetGameData.totalTries);
         }
        

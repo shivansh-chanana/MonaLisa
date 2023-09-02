@@ -1,5 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Handles Effects of UI
+ */
+
 using UnityEngine;
 using DG.Tweening;
 

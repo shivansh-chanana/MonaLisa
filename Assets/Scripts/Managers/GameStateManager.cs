@@ -1,5 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Handles the state of the game
+ * Paused | Started | Win | lose
+ */
+
 using UnityEngine;
 using UnityEngine.Events;
 

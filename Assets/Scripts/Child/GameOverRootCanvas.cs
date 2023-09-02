@@ -1,3 +1,9 @@
+/*
+ * This script handles the GameOver Canvas state &
+ * it's functionalities like retry and menu
+ */
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +44,8 @@ public class GameOverRootCanvas : MonoBehaviour
 
     void OnMenu() 
     {
+        //Remove data if going from game over screen to menu
+        SaveLoadManager.instance.RemoveAllSaveData();
         LevelManager.instance.LoadMenu();
     }
 

@@ -51,3 +51,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1e76b1009cb6cd2418a218a02e9fdbfc, type: 2}
   - {fileID: 11400000, guid: c4e96b36c59253f49802a8795f0232a3, type: 2}
   - {fileID: 11400000, guid: 21fde16327c7c72408fcc67b392ad56d, type: 2}
+  - {fileID: 11400000, guid: 302f823d22966314c873503f23e2e970, type: 2}
+  - {fileID: 11400000, guid: 16270f943ccf7ec47a50f6df7f0e5979, type: 2}
+  - {fileID: 11400000, guid: 41acf68fd2f6400458d82cfdee567b3f, type: 2}
+  - {fileID: 11400000, guid: 6cbe933a1eb7d46489f1220e735f12ea, type: 2}
+  - {fileID: 11400000, guid: 9d8fd5caad572eb4fbd2caf0c2adb2ff, type: 2}
+  - {fileID: 11400000, guid: 6c0da45b152d0364b913f7727c69f968, type: 2}
+  - {fileID: 11400000, guid: 356b4ed0054115140b7e25acce850b6e, type: 2}
+  - {fileID: 11400000, guid: 50ebde105de82fa43b8c56925618c6e5, type: 2}
+  - {fileID: 11400000, guid: 978fc8f5f4c22a449a2c88cec99deea6, type: 2}
+  - {fileID: 11400000, guid: 4afbe63319686b145b0ceb965507a12f, type: 2}
+  - {fileID: 11400000, guid: f6a1cafb9cb389f45a0bdfc3565051a8, type: 2}
+  - {fileID: 11400000, guid: 8043c15cf6eb9f74b9c460840c3d06f9, type: 2}
+  - {fileID: 11400000, guid: 454470c25ea9eb342bddd9e32992e866, type: 2}
+  - {fileID: 11400000, guid: a35a50a44c100264098766479fff318b, type: 2}
+  - {fileID: 11400000, guid: ec23600e0729be44ba0a20ad8e0d8650, type: 2}
+  - {fileID: 11400000, guid: 06e433297f55003489ba3f9d0c4dc817, type: 2}
+  - {fileID: 11400000, guid: 0c5eb4d81b836c448910231b43553752, type: 2}
+  - {fileID: 11400000, guid: acdcb179f92bd614c94c439172a80e77, type: 2}
+  - {fileID: 11400000, guid: 5c0ccf4ce18fafe489879b6e334a5f8d, type: 2}
+  - {fileID: 11400000, guid: 94e23517d73b39f40bc26f91bc683edc, type: 2}
+  OnCardsCreateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  spawnParent: {fileID: 0}

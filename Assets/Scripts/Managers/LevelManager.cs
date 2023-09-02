@@ -1,3 +1,7 @@
+/*
+ * Handles Level Loading for all the scenes
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

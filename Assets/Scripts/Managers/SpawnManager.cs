@@ -1,4 +1,8 @@
-using System.Collections;
+/*
+ * This script handles logic for creating cards
+ * instatiates according to last saved state
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;

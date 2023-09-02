@@ -1,7 +1,10 @@
+/*
+ * Card script for managing cards and can be changed to any super card or different kind
+ * of card as it inherits from CardBase
+ */
+
 #pragma warning disable CS0108
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 

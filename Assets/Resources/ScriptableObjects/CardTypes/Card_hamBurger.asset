@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3b33005100c5994fbbf9bacb91cf882, type: 3}
+  m_Name: Card_hamBurger
+  m_EditorClassIdentifier: 
+  foodItem: {fileID: 1401878236326532492, guid: 7754872553b2024439cc2c06f2112bb5, type: 3}
+  foodType: 12
+  amount: 10
+  bgColor: {r: 0.9764706, g: 0.19288135, b: 0.043137245, a: 1}

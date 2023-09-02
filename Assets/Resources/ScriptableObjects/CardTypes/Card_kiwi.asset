@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3b33005100c5994fbbf9bacb91cf882, type: 3}
+  m_Name: Card_kiwi
+  m_EditorClassIdentifier: 
+  foodItem: {fileID: 742757448080443727, guid: 546fb1edf4d80614889f8d802975f001, type: 3}
+  foodType: 14
+  amount: 10
+  bgColor: {r: 0.5660378, g: 0.4236383, b: 0.23851901, a: 1}

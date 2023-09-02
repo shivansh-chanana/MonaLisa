@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+//Food items are the 3D objects on front face of cards
+
 using UnityEngine;
 
-public class FoodScript : FoodBaseScript
+public class FoodScript : MonoBehaviour
 {
     void Start()
     {
