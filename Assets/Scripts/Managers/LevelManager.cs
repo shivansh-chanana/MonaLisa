@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static LevelManager instance;
+
+    private void Awake()
     {
-        
+        if (instance)
+            Destroy(gameObject);
+        else
+            instance = this;
+
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        Invoke(nameof(LoadMenu),2f);
+    }
+
+    void LoadMenu() 
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
